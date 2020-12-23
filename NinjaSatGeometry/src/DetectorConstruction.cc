@@ -93,6 +93,7 @@ G4VPhysicalVolume *DetectorConstruction::Construct()
     G4Material *H = nist->FindOrBuildMaterial("G4_H");
     G4Material *O = nist->FindOrBuildMaterial("G4_O");
     G4Material *Sn = nist->FindOrBuildMaterial("G4_Sn");
+    G4Material *Au = nist->FindOrBuildMaterial("G4_Au");
 
     G4double mmN = 14.01 * g / mole;
     G4Element *elN = new G4Element("Nitrogen", "N", 7., mmN);
@@ -244,11 +245,31 @@ G4VPhysicalVolume *DetectorConstruction::Construct()
 
     const G4double zP[] = {-0.75 * cm, 0.75 * cm};
     const G4double rI[] = {0, 0};
-    auto hexr = 0.3 * mm;
-    const G4double rO[] = {hexr, hexr};
+
+    auto Nir = 0.3 * mm;
+    const G4double Nir0[] = {Nir, Nir};
+    G4Polyhedra *solidNiPlate =
+        new G4Polyhedra("NiPlateS", 0 * deg, 360 * deg, 6, 2, zP, rI, Nir0);
+    G4LogicalVolume *logicNiPlate =
+        new G4LogicalVolume(solidNiPlate, //its solids
+                            Ni,           //its material
+                            "NiPlateLV"); //its name
+
+    auto Aur = 0.298 * mm;
+    const G4double AurO[] = {Aur, Aur};
+    G4Polyhedra *solidAuPlate =
+        new G4Polyhedra("AuPlateS", 0 * deg, 360 * deg, 6, 2, zP, rI, AurO);
+
+    G4LogicalVolume *logicAuPlate =
+        new G4LogicalVolume(solidAuPlate, //its solids
+                            Au,           //its material
+                            "AuPlateLV"); //its name
+
+    auto hexr = 0.295 * mm;
+    const G4double hexr0[] = {hexr, hexr};
 
     G4Polyhedra *solidHexAperture =
-        new G4Polyhedra("HexApertureS", 0 * deg, 360 * deg, 6, 2, zP, rI, rO);
+        new G4Polyhedra("HexApertureS", 0 * deg, 360 * deg, 6, 2, zP, rI, hexr0);
 
     G4LogicalVolume *logicHexAperture =
         new G4LogicalVolume(solidHexAperture, //its solids
@@ -274,12 +295,12 @@ G4VPhysicalVolume *DetectorConstruction::Construct()
                 new G4PVPlacement(rotZ90,
                                   G4ThreeVector(k * x_grid_coordinate * mm,
                                                 k * y_grid_coordinate * mm, 0),
-                                  logicHexAperture, // its logical volume
-                                  "HexAperturePV",  // its name
-                                  logicCollimeter,  // its mother  volume
-                                  false,            // no boolean operations
-                                  0,                // copy number
-                                  fCheckOverlaps);  // checking overlaps
+                                  logicNiPlate,    // its logical volume
+                                  "HexAperturePV", // its name
+                                  logicCollimeter, // its mother  volume
+                                  false,           // no boolean operations
+                                  0,               // copy number
+                                  fCheckOverlaps); // checking overlaps
             }
 
             if (i != 0 && j != 0)
@@ -289,11 +310,11 @@ G4VPhysicalVolume *DetectorConstruction::Construct()
                     new G4PVPlacement(rotZ90,
                                       G4ThreeVector(l * x_grid_coordinate * mm,
                                                     -l * y_grid_coordinate * mm, 0),
-                                      logicHexAperture, // its logical volume
-                                      "HexAperturePV",  // its name
-                                      logicCollimeter,  // its mother  volume
-                                      false,            // no boolean operations
-                                      0,                // copy number
+                                      logicNiPlate,    // its logical volume
+                                      "HexAperturePV", // its name
+                                      logicCollimeter, // its mother  volume
+                                      false,           // no boolean operations
+                                      0,               // copy number
                                       fCheckOverlaps);
                 }
             }
@@ -315,17 +336,33 @@ G4VPhysicalVolume *DetectorConstruction::Construct()
                     new G4PVPlacement(rotZ90,
                                       G4ThreeVector(k * x_grid_coordinate * mm,
                                                     l * y_grid_coordinate * mm, 0),
-                                      logicHexAperture, // its logical volume
-                                      "HexAperturePV",  // its name
-                                      logicCollimeter,  // its mother  volume
-                                      false,            // no boolean operations
-                                      0,                // copy number
+                                      logicNiPlate,    // its logical volume
+                                      "HexAperturePV", // its name
+                                      logicCollimeter, // its mother  volume
+                                      false,           // no boolean operations
+                                      0,               // copy number
                                       fCheckOverlaps);
                 }
             }
         }
     }
+    new G4PVPlacement(0,
+                      G4ThreeVector(),
+                      logicAuPlate,    // its logical volume
+                      "HexAperturePV", // its name
+                      logicNiPlate,    // its mother  volume
+                      false,           // no boolean operations
+                      0,               // copy number
+                      fCheckOverlaps);
 
+    new G4PVPlacement(0,
+                      G4ThreeVector(),
+                      logicHexAperture, // its logical volume
+                      "HexAperturePV",  // its name
+                      logicAuPlate,     // its mother  volume
+                      false,            // no boolean operations
+                      0,                // copy number
+                      fCheckOverlaps);
     //*************************************************************************************************
     // Al Chamber
     //*************************************************************************************************
