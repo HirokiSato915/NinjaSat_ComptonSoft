@@ -1,0 +1,3 @@
+# Hashes of file build rules.
+8a7a08379a66d6c7838caad3c91cc217 rubyext/CMakeFiles/NinjaSatGeometry.dir/NinjaSatGeometryRUBY.stamp
+42815e49d5f22c01a71a01a3143ad069 rubyext/CMakeFiles/NinjaSatGeometry_swig_compilation
