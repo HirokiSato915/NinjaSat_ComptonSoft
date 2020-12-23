@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/odakahirokazu/ComptonSoft/master/xmlstyle/detector_parameters_v3.xsl" ?>
+
+<detector_parameters>
+  <name>NinjaSat detector</name>
+  <comment>2020-09-28 | Hirokazu Odaka</comment>
+  <auto_position flag="0" />
+  <sensitive_detector_not_found_warning flag="1" />
+  <data> 
+    <sensitive_detector type="2DPixel" name="SensitiveInnerLV">
+      <common>
+        <parameters>
+          <channel_properties>
+            <noise_level param0="0.1" param1="0.0" param2="0.05" />
+            <threshold value="1.0" />
+          </channel_properties>
+          <reconstruction mode="2" />
+        </parameters>
+      </common>
+      <detector_list id_method="path" layer_offset="1">
+        <detector id="1" path="AlChamberPV/GasCellPV/SensitiveInnerPV" />
+      </detector_list>
+    </sensitive_detector>
+    <sensitive_detector type="2DPixel" name="SensitiveOuterLV">
+      <common>
+        <parameters>
+          <channel_properties>
+            <noise_level param0="0.1" param1="0.0" param2="0.05" />
+            <threshold value="1.0" />
+          </channel_properties>
+          <reconstruction mode="2" />
+        </parameters>
+      </common>
+      <detector_list id_method="path" layer_offset="1">
+        <detector id="2" path="AlChamberPV/GasCellPV/SensitiveOuterPV" />
+      </detector_list>
+    </sensitive_detector>
+  </data>
+</detector_parameters>
