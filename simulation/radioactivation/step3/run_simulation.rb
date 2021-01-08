@@ -10,7 +10,6 @@ def run_simulation(num, random, output, ri, volume_path)
   sim.print_detector_info
   sim.set_database(detector_configuration: "../database/detector_configuration.xml",
                    detector_parameters: "../database/detector_parameters.xml")
-  # sim.set_gdml "../database/mass_model.gdml"
   sim.set_geometry NinjaSatGeometry::NinjaSatMainGeometry
   sim.set_physics(hadron_model: "BIC",
                   hadron_hp: true,
@@ -63,7 +62,7 @@ end
 decay_rates_file = "../step2/decay_rates.dat"
 volume = 'Collimeter'
 volume_path = '/WorldPV/CollimeterPV'
-time = 10000000.0 # s
+time = 100000.0 # s
 number_threshold = 100.0
 
 as = ComptonSoft::ActivationSummary.new

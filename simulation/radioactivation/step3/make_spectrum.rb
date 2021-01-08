@@ -3,9 +3,8 @@
 require "RubyROOT"
 
 file_list = Dir.glob("sim_decay_Collimeter_*.root")
-# file_list = Dir.glob("sim_decay_Collimeter_*.root")
 file_output = "collimeter_spectrum.root"
-exposure =  10000000.0
+exposure =  1000000.0
 
 tree = Root::TChain.new("hittree", "hittree")
 file_list.each do |file|
